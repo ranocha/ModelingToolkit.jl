@@ -1285,6 +1285,16 @@ function markio!(state, orig_inputs, inputs, outputs; check = true)
     state, orig_inputs
 end
 
+function set_priorities!(state, priorities)
+    fullvars = state.fullvars
+    for (i, v) in enumerate(fullvars)
+        if v in keys(priorities)
+            v = setmetadata(v, VariableStatePriority, priorities[v])
+            fullvars[i] = v
+        end
+    end
+end
+
 """
     (; A, B, C, D), simplified_sys = linearize(sys, inputs, outputs;    t=0.0, op = Dict(), allow_input_derivatives = false, kwargs...)
     (; A, B, C, D)                 = linearize(simplified_sys, lin_fun; t=0.0, op = Dict(), allow_input_derivatives = false)
